@@ -1,6 +1,7 @@
 import streamlit as st
 import time
 from datetime import datetime
+from zoneinfo import ZoneInfo
 
 st.set_page_config(page_title="For My Valentine 💕", page_icon="💘")
 
@@ -44,17 +45,21 @@ st.markdown('<div class="big-text">A Very Important Question…</div>', unsafe_a
 # -----------------------
 # Cinematic Countdown
 # -----------------------
-valentines_day = datetime(datetime.now().year, 2, 14)
-if datetime.now() > valentines_day:
-    valentines_day = datetime(datetime.now().year + 1, 2, 14)
+local_tz = ZoneInfo("America/Los_Angeles")  # <-- adjust if needed
 
-time_left = valentines_day - datetime.now()
+now = datetime.now(local_tz)
+
+valentines_day = datetime(now.year, 2, 14, 0, 0, 0, tzinfo=local_tz)
+
+if now > valentines_day:
+    valentines_day = datetime(now.year + 1, 2, 14, 0, 0, 0, tzinfo=local_tz)
+
+time_left = valentines_day - now
 
 days = time_left.days
 hours = time_left.seconds // 3600
 minutes = (time_left.seconds % 3600) // 60
 seconds = time_left.seconds % 60
-
 st.markdown(
     f"""
     <div style="text-align:center; margin-top:30px;">
